@@ -1,0 +1,837 @@
+services:
+  basket.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Basket.API
+      target: base
+    depends_on:
+    - basket.data
+    - ddagent
+    - identity.api
+    - rabbitmq
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/basket.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Basket.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Basket\Basket.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  basket.data:
+    image: redis:alpine
+  catalog.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Catalog.API
+      target: base
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/catalog.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Catalog.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Catalog\Catalog.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  ddagent:
+    cap_add:
+    - NET_ADMIN
+    - SYS_ADMIN
+    - SYS_PTRACE
+    - SYS_RESOURCE
+    environment:
+      DD_API_KEY: '[DATADOG_API_KEY]'
+      DD_APM_ENABLED: "true"
+      DD_APM_ENV: microsoft
+      DD_DOCKER_LABELS_AS_TAGS: '{"com.docker.compose.service":"service"}'
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+      DD_LOGS_ENABLED: "true"
+      DD_PROCESS_AGENT_ENABLED: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+    image: datadog/agent:latest
+    ports:
+    - protocol: tcp
+      published: 8126
+      target: 8126
+    volumes:
+    - /proc:/host/proc/:ro
+    - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    - /sys/kernel/debug:/sys/kernel/debug:rw
+    - /var/run/docker.sock:/var/run/docker.sock:rw
+  identity.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Identity.API
+      target: base
+    depends_on:
+    - ddagent
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/identity.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Identity.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Identity\Identity.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  locations.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Location/Locations.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Locations.API
+      target: base
+    depends_on:
+    - ddagent
+    - nosql.data
+    - rabbitmq
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/locations.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Locations.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Location\Locations.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  marketing.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Marketing/Marketing.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Marketing.API
+      target: base
+    depends_on:
+    - ddagent
+    - identity.api
+    - nosql.data
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/marketing.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Marketing.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Marketing\Marketing.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  mobilemarketingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: OcelotApiGw
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ocelotapigw:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/OcelotApiGw.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\ApiGw-Base:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  mobileshoppingagg:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Mobile.Shopping.HttpAggregator
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/mobileshoppingagg:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Mobile.Shopping.HttpAggregator.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\Mobile.Bff.Shopping\aggregator:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  mobileshoppingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: OcelotApiGw
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ocelotapigw:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/OcelotApiGw.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\ApiGw-Base:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  nosql.data:
+    image: mongo
+  ordering.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Ordering.API
+      target: base
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ordering.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Ordering.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Ordering\Ordering.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  ordering.backgroundtasks:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Ordering.BackgroundTasks
+      target: base
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ordering.backgroundtasks:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Ordering.BackgroundTasks.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Ordering\Ordering.BackgroundTasks:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  ordering.signalrhub:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ordering.signalrhub:linux-latest
+  payment.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Payment/Payment.API/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Payment.API
+      target: base
+    depends_on:
+    - ddagent
+    - rabbitmq
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/payment.api:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Payment.API.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Services\Payment\Payment.API:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+  seq:
+    image: datalust/seq:latest
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+  webhooks.api:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+    - ddagent
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webhooks.api:linux-latest
+  webhooks.client:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Web/WebhookClient/Dockerfile
+    depends_on:
+    - ddagent
+    - webhooks.api
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webhooks.client:linux-latest
+    network_mode: bridge
+  webmarketingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: OcelotApiGw
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ocelotapigw:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/OcelotApiGw.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\ApiGw-Base:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  webmvc:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Web/WebMVC/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: WebMVC
+      target: base
+    depends_on:
+    - ddagent
+    - webmarketingapigw
+    - webshoppingagg
+    - webshoppingapigw
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/webmvc:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/WebMVC.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Web\WebMVC:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  webshoppingagg:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: Web.Shopping.HttpAggregator
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/webshoppingagg:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/Web.Shopping.HttpAggregator.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\Web.Bff.Shopping\aggregator:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  webshoppingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: OcelotApiGw
+      target: base
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/ocelotapigw:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/OcelotApiGw.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\ApiGateways\ApiGw-Base:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  webspa:
+    build:
+      args:
+        NODE_IMAGE: node:8.11
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Web/WebSPA/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: WebSPA
+      target: base
+    depends_on:
+    - ddagent
+    entrypoint: tail -f /dev/null
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/webspa:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/WebSPA.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Web\WebSPA:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+  webstatus:
+    build:
+      context: C:\Azure DevOps Repo\eCon
+      dockerfile: src/Web/WebStatus/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: WebStatus
+      target: base
+    entrypoint: tail -f /dev/null
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: eshop/webstatus:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.2/WebStatus.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    tty: true
+    volumes:
+    - C:\Azure DevOps Repo\eCon\src\Web\WebStatus:/app:rw
+    - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\jay.dave\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\jay.dave\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\jay.dave\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Azure DevOps Repo\eCon:/src:rw
+version: '3.4'

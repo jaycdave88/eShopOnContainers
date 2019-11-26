@@ -1,0 +1,8 @@
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\bin\Debug\netstandard2.0\Devspaces.Support.deps.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\bin\Debug\netstandard2.0\Devspaces.Support.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\obj\Debug\netstandard2.0\Devspaces.Support.csprojAssemblyReference.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\obj\Debug\netstandard2.0\Devspaces.Support.AssemblyInfoInputs.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\obj\Debug\netstandard2.0\Devspaces.Support.AssemblyInfo.cs
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\bin\Debug\netstandard2.0\Devspaces.Support.pdb
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\obj\Debug\netstandard2.0\Devspaces.Support.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\Devspaces.Support\obj\Debug\netstandard2.0\Devspaces.Support.pdb

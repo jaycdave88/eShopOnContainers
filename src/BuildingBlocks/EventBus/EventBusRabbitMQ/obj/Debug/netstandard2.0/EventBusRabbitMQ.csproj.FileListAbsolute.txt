@@ -1,0 +1,11 @@
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\bin\Debug\netstandard2.0\EventBusRabbitMQ.deps.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\bin\Debug\netstandard2.0\EventBusRabbitMQ.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\bin\Debug\netstandard2.0\EventBusRabbitMQ.pdb
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\bin\Debug\netstandard2.0\EventBus.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\bin\Debug\netstandard2.0\EventBus.pdb
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.csprojAssemblyReference.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.AssemblyInfoInputs.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.AssemblyInfo.cs
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.csproj.CopyComplete
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\BuildingBlocks\EventBus\EventBusRabbitMQ\obj\Debug\netstandard2.0\EventBusRabbitMQ.pdb

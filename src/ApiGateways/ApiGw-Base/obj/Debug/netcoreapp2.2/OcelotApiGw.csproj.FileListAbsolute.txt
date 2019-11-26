@@ -1,0 +1,15 @@
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\OcelotApiGw.deps.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\OcelotApiGw.runtimeconfig.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\OcelotApiGw.runtimeconfig.dev.json
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\OcelotApiGw.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\bin\Debug\netcoreapp2.2\OcelotApiGw.pdb
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.csprojAssemblyReference.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.RazorAssemblyInfo.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.RazorAssemblyInfo.cs
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.AssemblyInfoInputs.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.AssemblyInfo.cs
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.RazorTargetAssemblyInfo.cache
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.dll
+C:\Users\jay.dave\Desktop\Code\eShopOnContainers-dev\src\ApiGateways\ApiGw-Base\obj\Debug\netcoreapp2.2\OcelotApiGw.pdb

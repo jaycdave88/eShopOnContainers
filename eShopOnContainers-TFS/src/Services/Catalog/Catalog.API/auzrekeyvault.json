@@ -1,0 +1,7 @@
+{
+  "azureKeyVault": {
+    "vault": "eshoponcontainers-kv",
+    "clientId": "d75728f7-1572-4e07-bc15-b1de05ecec65",
+    "clientSecret": "hNb5UCAcfGAbaEH3aUfX.UP19DAmi:=-"
+  }
+}

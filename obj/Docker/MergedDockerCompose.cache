@@ -1,0 +1,445 @@
+services:
+  basket.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+    depends_on:
+    - basket.data
+    - ddagent
+    - identity.api
+    - rabbitmq
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/basket.api:linux-latest
+  basket.data:
+    image: redis:alpine
+  catalog.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/catalog.api:linux-latest
+  ddagent:
+    cap_add:
+    - SYS_ADMIN
+    - SYS_RESOURCE
+    - SYS_PTRACE
+    - NET_ADMIN
+    environment:
+      DD_API_KEY: '[DATADOG_API_KEY]'
+      DD_APM_ENABLED: "true"
+      DD_APM_ENV: microsoft
+      DD_DOCKER_LABELS_AS_TAGS: '{"com.docker.compose.service":"service"}'
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+      DD_LOGS_ENABLED: "true"
+      DD_PROCESS_AGENT_ENABLED: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+    image: datadog/agent:latest
+    ports:
+    - protocol: tcp
+      published: 8126
+      target: 8126
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:rw
+    - /proc:/host/proc/:ro
+    - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    - /sys/kernel/debug:/sys/kernel/debug:rw
+  identity.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+    depends_on:
+    - ddagent
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/identity.api:linux-latest
+  locations.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Location/Locations.API/Dockerfile
+    depends_on:
+    - ddagent
+    - nosql.data
+    - rabbitmq
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/locations.api:linux-latest
+  marketing.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Marketing/Marketing.API/Dockerfile
+    depends_on:
+    - ddagent
+    - identity.api
+    - nosql.data
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/marketing.api:linux-latest
+  mobilemarketingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ocelotapigw:linux-latest
+  mobileshoppingagg:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/mobileshoppingagg:linux-latest
+  mobileshoppingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ocelotapigw:linux-latest
+  nosql.data:
+    image: mongo
+  ordering.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ordering.api:linux-latest
+  ordering.backgroundtasks:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
+    depends_on:
+    - ddagent
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ordering.backgroundtasks:linux-latest
+  ordering.signalrhub:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ordering.signalrhub:linux-latest
+  payment.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Payment/Payment.API/Dockerfile
+    depends_on:
+    - ddagent
+    - rabbitmq
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/payment.api:linux-latest
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+  seq:
+    image: datalust/seq:latest
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+  webhooks.api:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+    - ddagent
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webhooks.api:linux-latest
+  webhooks.client:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Web/WebhookClient/Dockerfile
+    depends_on:
+    - ddagent
+    - webhooks.api
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webhooks.client:linux-latest
+    network_mode: bridge
+  webmarketingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ocelotapigw:linux-latest
+  webmvc:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Web/WebMVC/Dockerfile
+    depends_on:
+    - ddagent
+    - webmarketingapigw
+    - webshoppingagg
+    - webshoppingapigw
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webmvc:linux-latest
+  webshoppingagg:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webshoppingagg:linux-latest
+  webshoppingapigw:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+    - basket.api
+    - catalog.api
+    - ddagent
+    - identity.api
+    - marketing.api
+    - nosql.data
+    - ordering.api
+    - rabbitmq
+    - sql.data
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/ocelotapigw:linux-latest
+  webspa:
+    build:
+      args:
+        NODE_IMAGE: node:8.11
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Web/WebSPA/Dockerfile
+    depends_on:
+    - ddagent
+    environment:
+      DD_ADONET_ANALYTICS_ENABLED: "true"
+      DD_ASPNETMVC_ANALYTICS_ENABLED: "true"
+      DD_HttpMessageHandler_ENABLED: "false"
+      DD_LOGS_INJECTION: "true"
+      DD_SYSTEM_PROBE_ENABLED: "true"
+      DD_TRACE_AGENT_HOSTNAME: ddagent
+      DD_TRACE_AGENT_PORT: '8126'
+      DD_TRACE_ANALYTICS_ENABLED: "true"
+      DD_WebRequest_ANALYTICS_ENABLED: "true"
+    image: eshop/webspa:linux-latest
+  webstatus:
+    build:
+      context: C:\Azure DevOps Repo\eShopOnContainers-TFS
+      dockerfile: src/Web/WebStatus/Dockerfile
+    image: eshop/webstatus:linux-latest
+version: '3.4'

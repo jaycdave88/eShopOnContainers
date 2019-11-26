@@ -1,0 +1,443 @@
+version: '3.4'
+
+services:
+  basket.api:
+    image: eshop/basket.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Basket.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_basket.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Basket\Basket.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_basket.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_basket.api$ \"bin/Debug/netcoreapp2.2/Basket.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+  catalog.api:
+    image: eshop/catalog.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Catalog.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_catalog.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Catalog\Catalog.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_catalog.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_catalog.api$ \"bin/Debug/netcoreapp2.2/Catalog.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  identity.api:
+    image: eshop/identity.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Identity.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_identity.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Identity\Identity.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_identity.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_identity.api$ \"bin/Debug/netcoreapp2.2/Identity.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  locations.api:
+    image: eshop/locations.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Locations.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_locations.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Location\Locations.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_locations.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_locations.api$ \"bin/Debug/netcoreapp2.2/Locations.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  marketing.api:
+    image: eshop/marketing.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Marketing.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_marketing.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Marketing\Marketing.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_marketing.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_marketing.api$ \"bin/Debug/netcoreapp2.2/Marketing.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  mobilemarketingapigw:
+    image: eshop/ocelotapigw:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "OcelotApiGw"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_mobilemarketingapigw$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\ApiGw-Base:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_mobilemarketingapigw$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_mobilemarketingapigw$ \"bin/Debug/netcoreapp2.2/OcelotApiGw.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  mobileshoppingagg:
+    image: eshop/mobileshoppingagg:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Mobile.Shopping.HttpAggregator"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_mobileshoppingagg$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\Mobile.Bff.Shopping\aggregator:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_mobileshoppingagg$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_mobileshoppingagg$ \"bin/Debug/netcoreapp2.2/Mobile.Shopping.HttpAggregator.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  mobileshoppingapigw:
+    image: eshop/ocelotapigw:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "OcelotApiGw"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_mobileshoppingapigw$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\ApiGw-Base:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_mobileshoppingapigw$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_mobileshoppingapigw$ \"bin/Debug/netcoreapp2.2/OcelotApiGw.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  ordering.api:
+    image: eshop/ordering.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Ordering.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_ordering.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Ordering\Ordering.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_ordering.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_ordering.api$ \"bin/Debug/netcoreapp2.2/Ordering.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  ordering.backgroundtasks:
+    image: eshop/ordering.backgroundtasks:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Ordering.BackgroundTasks"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_ordering.backgroundtasks$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Ordering\Ordering.BackgroundTasks:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_ordering.backgroundtasks$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_ordering.backgroundtasks$ \"bin/Debug/netcoreapp2.2/Ordering.BackgroundTasks.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  payment.api:
+    image: eshop/payment.api:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Payment.API"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_payment.api$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Services\Payment\Payment.API:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_payment.api$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_payment.api$ \"bin/Debug/netcoreapp2.2/Payment.API.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webmarketingapigw:
+    image: eshop/ocelotapigw:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "OcelotApiGw"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webmarketingapigw$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\ApiGw-Base:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webmarketingapigw$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webmarketingapigw$ \"bin/Debug/netcoreapp2.2/OcelotApiGw.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webmvc:
+    image: eshop/webmvc:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "WebMVC"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webmvc$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Web\WebMVC:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webmvc$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webmvc$ \"bin/Debug/netcoreapp2.2/WebMVC.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webshoppingagg:
+    image: eshop/webshoppingagg:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "Web.Shopping.HttpAggregator"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webshoppingagg$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\Web.Bff.Shopping\aggregator:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webshoppingagg$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webshoppingagg$ \"bin/Debug/netcoreapp2.2/Web.Shopping.HttpAggregator.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webshoppingapigw:
+    image: eshop/ocelotapigw:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "OcelotApiGw"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webshoppingapigw$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\ApiGateways\ApiGw-Base:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webshoppingapigw$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webshoppingapigw$ \"bin/Debug/netcoreapp2.2/OcelotApiGw.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webspa:
+    image: eshop/webspa:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "WebSPA"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webspa$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Web\WebSPA:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webspa$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webspa$ \"bin/Debug/netcoreapp2.2/WebSPA.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+
+  webstatus:
+    image: eshop/webstatus:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "WebStatus"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webstatus$
+    volumes:
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS\src\Web\WebStatus:/app
+      - C:\Azure DevOps Repo\eShopOnContainers-TFS:/src
+      - C:\Users\jay.dave\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webstatus$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webstatus$ \"bin/Debug/netcoreapp2.2/WebStatus.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
