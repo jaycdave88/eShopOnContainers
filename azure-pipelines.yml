@@ -1,15 +1,4 @@
 # Deploy to Azure Kubernetes Service
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'datadog-demo (8c56d827-5f07-45ce-8f2b-6c5001db5c6f)'
-    azureContainerRegistry: '{"loginServer":"eshopcontainerregistry.azurecr.io", "id" : "/subscriptions/8c56d827-5f07-45ce-8f2b-6c5001db5c6f/resourceGroups/eShopOnContainers-West/providers/Microsoft.ContainerRegistry/registries/eShopContainerRegistry"}'
-    dockerComposeFile: '**/docker-compose.yml'
-    dockerComposeFileArgs: 'DD_API_KEY= 775d81714e3b7721f936dd988c505632'
-    action: 'Run a Docker Compose command'
-    dockerComposeCommand: 'docker-compose up'
-# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
 - master
@@ -85,4 +74,14 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+          - task: DockerCompose@0
+            inputs:
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'datadog-demo (8c56d827-5f07-45ce-8f2b-6c5001db5c6f)'
+              azureContainerRegistry: '{"loginServer":"eshopcontainerregistry.azurecr.io", "id" : "/subscriptions/8c56d827-5f07-45ce-8f2b-6c5001db5c6f/resourceGroups/eShopOnContainers-West/providers/Microsoft.ContainerRegistry/registries/eShopContainerRegistry"}'
+              dockerComposeFile: '**/docker-compose.yml'
+              dockerComposeFileArgs: 'DD_API_KEY= 775d81714e3b7721f936dd988c505632'
+              action: 'Run a Docker Compose command'
+              dockerComposeCommand: 'docker-compose up'
+                
 
