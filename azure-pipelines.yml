@@ -1,0 +1,88 @@
+# Deploy to Azure Kubernetes Service
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'datadog-demo (8c56d827-5f07-45ce-8f2b-6c5001db5c6f)'
+    azureContainerRegistry: '{"loginServer":"eshopcontainerregistry.azurecr.io", "id" : "/subscriptions/8c56d827-5f07-45ce-8f2b-6c5001db5c6f/resourceGroups/eShopOnContainers-West/providers/Microsoft.ContainerRegistry/registries/eShopContainerRegistry"}'
+    dockerComposeFile: '**/docker-compose.yml'
+    dockerComposeFileArgs: 'DD_API_KEY= 775d81714e3b7721f936dd988c505632'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'docker-compose up'
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '467fa46b-5e03-4c40-b791-24fd60546af7'
+  imageRepository: 'jaycdaveeshoponcontainers'
+  containerRegistry: 'eshopcontainerregistry.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'eshopcontainerregistry19456fb8-auth'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          
+    - upload: manifests
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'jaycdave88eShopOnContainers-5612.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
+
